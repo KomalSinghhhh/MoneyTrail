@@ -4,10 +4,15 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 
+const authMiddleware = require("./middleware/authMiddleware");
+const authRoutes = require("./routes/authRoutes");
+
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "*"  // Allow requests from any origin during development
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -19,13 +24,8 @@ mongoose
 
 // Routes
 const expenseRoutes = require("./routes/expenseRoutes");
-app.use("/api/expenses", expenseRoutes);
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Something went wrong!" });
-});
+app.use("/api/auth", authRoutes);
+app.use("/api/expenses", require("./middleware/authMiddleware"), expenseRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

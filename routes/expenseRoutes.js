@@ -33,5 +33,6 @@ router.post(
 router.post("/process-text", expenseController.addTextExpense);
 router.get("/history", expenseController.getExpenseHistory);
 router.get("/dashboard", expenseController.getDashboardData);
+router.delete("/:id", expenseController.deleteExpense);
 
 module.exports = router;

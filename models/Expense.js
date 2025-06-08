@@ -22,6 +22,11 @@ const expenseSchema = new mongoose.Schema({
     enum: ["manual", "image", "text"],
     required: true,
   },
+  username: {
+    type: String,
+    required: true,
+    index: true, // Add index for better query performance
+  },
   created_at: {
     type: Date,
     default: Date.now,
